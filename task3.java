@@ -25,7 +25,21 @@ public class Main {
         System.out.println(countRoots(new int[] {2, 5, 2}));
         System.out.println(countRoots(new int[] {1, -6, 9}));
 
-        System.out.println("\ntask 3.5");
+        System.out.println("\ntask 3.6");
+        String[][] data1 = {
+                {"Apple", "Shop1", "Shop2", "Shop3", "Shop4"},
+                {"Banana", "Shop2", "Shop3", "Shop4"},
+                {"Orange", "Shop1", "Shop3", "Shop4"},
+                {"Pear", "Shop2", "Shop4"}
+        };
+        System.out.println(salesData(data1));
+        String[][] data2 = {
+                {"Fridge", "Shop2", "Shop3"},
+                {"Microwave", "Shop1", "Shop2", "Shop3", "Shop4"},
+                {"Laptop", "Shop3", "Shop4"},
+                {"Phone", "Shop1", "Shop2", "Shop3", "Shop4"}
+        };
+        System.out.println(salesData(data2));
 
         System.out.println("\ntask 3.7");
         System.out.println(validSplit("apple eagle egg goat"));
@@ -40,6 +54,23 @@ public class Main {
         System.out.println(commonVowel("Actions speak louder than words."));
 
         System.out.println("\ntask 3.10");
+        int[][] matrix1 = {
+                {1, 2, 3, 4, 5},
+                {6, 7, 8, 9, 10},
+                {5, 5, 5, 5, 5},
+                {7, 4, 3, 14, 2},
+                {1, 0, 11, 10, 1}
+        };
+        System.out.println(dataScience(matrix1));
+        int[][] matrix2 = {
+                {6, 4, 19, 0, 0},
+                {81, 25, 3, 1, 17},
+                {48, 12, 60, 32, 14},
+                {91, 47, 16, 65, 217},
+                {5, 73, 0, 4, 21}
+        };
+        System.out.println();
+        System.out.println(dataScience(matrix2));
     }
 
     public static String replaceVowels(String inputStr){
@@ -106,6 +137,24 @@ public class Main {
         }
     }
 
+    public static String salesData(String[][] data){
+        ArrayList<String> products = new ArrayList<>();
+        int maxLen = 0;
+
+        for (int i = 0; i < data.length; i++){
+            if (data[i].length > maxLen){
+                maxLen = data[i].length;
+            }
+        }
+
+        for (int i = 0; i < data.length; i++){
+            if (data[i].length == maxLen){
+                products.add(data[i][0]);
+            }
+        }
+        return products.toString();
+    }
+
     public static boolean validSplit(String sentence){
         String[] words = sentence.split(" ");
         if (words.length <= 1) {
@@ -150,5 +199,31 @@ public class Main {
             }
         }
         return mostCommonVowel;
+    }
+
+    public static String dataScience(int[][] arrays){
+        int n = arrays.length;
+        int[] columnSums = new int[n];
+
+        for (int j = 0; j < n; j++) {
+            for (int i = 0; i < n; i++) {
+                if (i != j) {
+                    columnSums[j] += arrays[i][j];
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            arrays[i][i] = (int) Math.round((double) columnSums[i] / (n - 1));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++){
+            sb.append(Arrays.toString(arrays[i]));
+            if (i < n - 1) {
+                sb.append("\n");
+            }
+        }
+
+        return "[" + sb + "]";
     }
 }
