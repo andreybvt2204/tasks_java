@@ -16,7 +16,29 @@ public class Main {
         System.out.println("digitsCount(1289396387328L) -> " + digitsCount(1289396387328L));
 
         System.out.println("\ntask 5.4");
+        String[] data1 = {"cat", "create", "sat"};
+        System.out.println("totalPoints([\"cat\", \"create\", \"sat\"], \"caster\") -> "
+                + totalPoints(data1, "caster"));
+        String[] data2 = {"trance", "recant"};
+        System.out.println("totalPoints([\"trance\", \"recant\"], \"recant\") -> "
+                + totalPoints(data2, "recant"));
+        String[] data3 = {"dote", "dotes", "toes", "set", "dot", "dots", "sted"};
+        System.out.println("totalPoints([\"dote\", \"dotes\", \"toes\", \"set\", \"dot\", \"dots\", \"sted\"], \"tossed\") -> "
+                + totalPoints(data3, "tossed"));
 
+        System.out.println("\ntask 5.5");
+        System.out.println("sumsUp([1, 2, 3, 4, 5]) -> " + sumsUp(new int[] {1, 2, 3, 4, 5}));
+        System.out.println("sumsUp([1, 2, 3, 7, 9]) -> " + sumsUp(new int[] {1, 2, 3, 7, 9}));
+        System.out.println("sumsUp([10, 9, 7, 2, 8]) -> " + sumsUp(new int[] {10, 9, 7, 2, 8}));
+        System.out.println("sumsUp([1, 6, 5, 4, 8, 2, 3, 7]) -> " + sumsUp(new int[] {1, 6, 5, 4, 8, 2, 3, 7}));
+
+        System.out.println("\ntask 5.6");
+        System.out.println("takeDownAverage([\"95%\", \"83%\", \"90%\", \"87%\", \"88%\", \"93%\"]) -> "
+                + takeDownAverage(new String[] {"95%", "83%", "90%", "87%", "88%", "93%"}));
+        System.out.println("takeDownAverage([\"10%\"]) -> " + takeDownAverage(new String[] {"10%"}));
+        System.out.println("takeDownAverage([\"53%\", \"79%\"]) -> " + takeDownAverage(new String[] {"53%", "79%"}));
+
+        System.out.println("\ntask 5.7");
     }
 
     public static boolean sameLetterPattern(String str1, String str2) {
@@ -55,5 +77,57 @@ public class Main {
         } else {
             return digitsCountParent(number / 10, count + 1);
         }
+    }
+
+    public static int totalPoints(String[] words, String origWord) {
+        HashMap<Integer, Integer> points = new HashMap<>();
+        points.put(3, 1);
+        points.put(4, 2);
+        points.put(5, 3);
+        if (Arrays.asList(words).contains(origWord)) {
+            points.put(6, 54);
+        } else {
+            points.put(6, 4);
+        }
+
+        int result = 0;
+
+        outerLoop: for (String word : words) {
+            if (word.length() < 3) continue;
+            String copiedString = origWord;
+
+            for (int i = 0; i < word.length(); i++) {
+                if (!copiedString.contains(String.valueOf(word.charAt(i)))) continue outerLoop;
+                copiedString = copiedString.replace(String.valueOf(word.charAt(i)), "");
+            }
+
+            result += points.get(word.length());
+        }
+
+        return result;
+    }
+
+    public static String sumsUp(int[] nums) {
+        List<String> result = new ArrayList<>();
+        int lenArray = nums.length / 2;
+        for (int i = lenArray; i < nums.length; i++) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i] + nums[j] == 8) {
+                    result.add(Arrays.toString(new int[] {Math.min(nums[i], nums[j]), Math.max(nums[i], nums[j])}));
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    public static String takeDownAverage(String[] grades) {
+        int lenArray = grades.length;
+        int result = 0;
+        for (String grade : grades) {
+            result += Integer.parseInt(grade.substring(0, grade.length() - 1));
+        }
+        result = (int) Math.round((double) result / lenArray - (lenArray + 1) * 5);
+
+        return result + "%";
     }
 }
