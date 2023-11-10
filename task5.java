@@ -39,6 +39,13 @@ public class Main {
         System.out.println("takeDownAverage([\"53%\", \"79%\"]) -> " + takeDownAverage(new String[] {"53%", "79%"}));
 
         System.out.println("\ntask 5.7");
+        System.out.println("caesarCipher(\"encode\", \"hello world\", 3) -> "
+                + caesarCipher("encode", "hello world", 3));
+        System.out.println("caesarCipher(\"decode\", \"almost last task!\", 4 -> "
+                + caesarCipher("decode", "almost last task!", 4));
+
+        System.out.println("\ntask 5.8");
+
     }
 
     public static boolean sameLetterPattern(String str1, String str2) {
@@ -128,6 +135,32 @@ public class Main {
         }
         result = (int) Math.round((double) result / lenArray - (lenArray + 1) * 5);
 
-        return result + "%";
+        return result + "%"; // + 32 a = 97 A = 65 z 122 Z 90
+    }
+
+    public static String caesarCipher(String type, String inputStr, int shift) {
+        inputStr = inputStr.toUpperCase();
+        StringBuilder outputStr = new StringBuilder();
+        for (int i = 0; i < inputStr.length(); i++) {
+            char currentChar = inputStr.charAt(i);
+            if (type.equals("encode")) {
+                if (Character.isLetter(currentChar)){
+                    char encryptedChar = (char) ((currentChar - 'A' + shift) % 26 + 'A');
+                    outputStr.append(encryptedChar);
+                } else {
+                    outputStr.append(currentChar);
+                }
+            } else if (type.equals("decode")) {
+                if (Character.isLetter(currentChar)){
+                    char encryptedChar = (char) (((currentChar - 'A' + shift) % 26 + 26) % 26 + 'A');
+                    outputStr.append(encryptedChar);
+                } else {
+                    outputStr.append(currentChar);
+                }
+            } else {
+                return "???";
+            }
+        }
+        return "\"" + outputStr + "\"";
     }
 }
