@@ -69,57 +69,39 @@ public class Main {
     }
 
     public static Integer digitsCount(int number) {
-        if (number == 0) {
-            return 1;
-        } else {
-            int count = 0;
-            return digitsCountParent(number, count);
-        }
+        if (number == 0) return 1;
+        int count = 0;
+        return digitsCountParent(number, count);
     }
 
     public static Integer digitsCount(long number) {
-        if (number == 0) {
-            return 1;
-        } else {
-            int count = 0;
-            return digitsCountParent(number, count);
-        }
+        if (number == 0) return 1;
+        int count = 0;
+        return digitsCountParent(number, count);
     }
 
     private static Integer digitsCountParent(long number, int count) {
-        if (number <= 0) {
-            return count;
-        } else {
-            return digitsCountParent(number / 10, count + 1);
-        }
+        if (number <= 0) return count;
+        return digitsCountParent(number / 10, count + 1);
     }
 
     public static int totalPoints(String[] words, String origWord) {
-        HashMap<Integer, Integer> points = new HashMap<>();
-        points.put(3, 1);
-        points.put(4, 2);
-        points.put(5, 3);
-        if (Arrays.asList(words).contains(origWord)) {
-            points.put(6, 54);
-        } else {
-            points.put(6, 4);
-        }
-
-        int result = 0;
+        int resultPoints = 0;
+        int[] points = {1, 2, 3, 4};
+        if (Arrays.asList(words).contains(origWord)) points[3] = 54;
 
         outerLoop: for (String word : words) {
             if (word.length() < 3) continue;
-            String copiedString = origWord;
+            String copied = origWord;
 
             for (int i = 0; i < word.length(); i++) {
-                if (!copiedString.contains(String.valueOf(word.charAt(i)))) continue outerLoop;
-                copiedString = copiedString.replace(String.valueOf(word.charAt(i)), "");
+                String currentChar = String.valueOf(word.charAt(i));
+                if (!copied.contains(currentChar)) continue outerLoop;
+                copied = copied.replace(currentChar, "");
             }
-
-            result += points.get(word.length());
+            resultPoints += points[word.length() - 3];
         }
-
-        return result;
+        return resultPoints;
     }
 
     public static String sumsUp(int[] nums) {
@@ -128,7 +110,9 @@ public class Main {
         for (int i = lenArray; i < nums.length; i++) {
             for (int j = i - 1; j >= 0; j--) {
                 if (nums[i] + nums[j] == 8) {
-                    result.add(Arrays.toString(new int[] {Math.min(nums[i], nums[j]), Math.max(nums[i], nums[j])}));
+                    int minNum = Math.min(nums[i], nums[j]);
+                    int maxNum = Math.max(nums[i], nums[j]);
+                    result.add(Arrays.toString(new int[] {minNum, maxNum}));
                 }
             }
         }
@@ -146,28 +130,22 @@ public class Main {
         return result + "%";
     }
 
-    public static String caesarCipher(String type, String inputStr, int shift) {
+    public static String caesarCipher(String cryptoMode, String inputStr, int shift) {
         inputStr = inputStr.toUpperCase();
         StringBuilder outputStr = new StringBuilder();
         for (int i = 0; i < inputStr.length(); i++) {
             char currentChar = inputStr.charAt(i);
-            if (type.equals("encode")) {
-                if (Character.isLetter(currentChar)){
-                    char encryptedChar = (char) ((currentChar - 'A' + shift) % 26 + 'A');
-                    outputStr.append(encryptedChar);
-                } else {
-                    outputStr.append(currentChar);
-                }
-            } else if (type.equals("decode")) {
-                if (Character.isLetter(currentChar)){
-                    char encryptedChar = (char) (((currentChar - 'A' + shift) % 26 + 26) % 26 + 'A');
-                    outputStr.append(encryptedChar);
-                } else {
-                    outputStr.append(currentChar);
-                }
-            } else {
-                return "???";
+            if (!Character.isLetter(currentChar)) {
+                outputStr.append(currentChar);
+                continue;
             }
+            if (cryptoMode.equals("encode")) {
+                currentChar = (char) ((currentChar - 'A' + shift) % 26 + 'A');
+            } else if (cryptoMode.equals("decode")) {
+                currentChar = (char) (((currentChar - 'A' + shift) % 26 + 26) % 26 + 'A');
+            } else return inputStr;
+
+            outputStr.append(currentChar);
         }
         return "\"" + outputStr + "\"";
     }
