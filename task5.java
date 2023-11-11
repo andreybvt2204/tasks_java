@@ -45,6 +45,14 @@ public class Main {
                 + caesarCipher("decode", "almost last task!", 4));
 
         System.out.println("\ntask 5.8");
+        System.out.println("setSetup(5, 3) -> " + setSetup(5, 3));
+        System.out.println("setSetup(7, 3) -> " + setSetup(7, 3));
+
+        System.out.println("\ntask 5.10");
+        System.out.println("isNew(3) -> " + isNew(3));
+        System.out.println("isNew(30) -> " + isNew(30));
+        System.out.println("isNew(321) -> " + isNew(321));
+        System.out.println("isNew(123) -> " + isNew(123));
 
     }
 
@@ -135,7 +143,7 @@ public class Main {
         }
         result = (int) Math.round((double) result / lenArray - (lenArray + 1) * 5);
 
-        return result + "%"; // + 32 a = 97 A = 65 z 122 Z 90
+        return result + "%";
     }
 
     public static String caesarCipher(String type, String inputStr, int shift) {
@@ -162,5 +170,27 @@ public class Main {
             }
         }
         return "\"" + outputStr + "\"";
+    }
+
+    public static int setSetup(int n, int k){
+        if (n <= 0 || k < 0 || k > n) return 0;
+        return setSetupParent(n, k);
+    }
+
+    private static int setSetupParent(int n, int k){
+        if (k == 0) return 1;
+        return (n - (k - 1)) * setSetup(n, k - 1);
+    }
+
+    public static boolean isNew(int number) {
+        if (number < 21) return true;
+        String numberStr = String.valueOf(number);
+        for (int i = 0; i < numberStr.length() - 1; i++) {
+            char currentChar = numberStr.charAt(i);
+            char nextChar = numberStr.charAt(i + 1);
+            if (currentChar <= nextChar || (i == 0 && nextChar == '0')) continue;
+            return false;
+        }
+        return true;
     }
 }
